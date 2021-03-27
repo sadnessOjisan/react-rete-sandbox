@@ -2,14 +2,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 module.exports = {
-  mode: process.env.NODE_ENV,
+  mode: "development",
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "build.js",
   },
-  devtool: "inline-source-map",
-  target: ["web", "es5"],
   module: {
     rules: [
       {
@@ -24,11 +22,10 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".js", ".ts", ".tsx", ".css"],
+    extensions: [".js", ".ts", ".tsx"],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
   devServer: {
     historyApiFallback: true,
-    hot: true,
   },
+  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
 };

@@ -1,48 +1,39 @@
 import React from "react";
-import { Control } from "rete";
+import Rete, { Input, Node, Output } from "rete";
+export class NumControl extends Rete.Control {
+  static component = ({ value, onChange }) => (
+    <input
+      type="number"
+      value={value}
+      ref={(ref) => {
+        ref && ref.addEventListener("pointerdown", (e) => e.stopPropagation());
+      }}
+      onChange={(e) => onChange(+e.target.value)}
+    />
+  );
 
-class MyReactControl extends React.Component<{ name: string; id: string }> {
-  state = {};
-  componentDidMount() {
-    this.setState({
-      name: this.props.name,
-    });
-    console.log(this.props);
-    // @ts-ignore
-    this.props.putData(this.props.id, this.props.name);
-  }
-  onChange(event) {
-    // @ts-ignore
-    this.props.putData(this.props.id, event.target.value);
-    // @ts-ignore
-    this.props.emitter.trigger("process");
-    this.setState({
-      name: event.target.value,
-    });
-  }
-
-  render() {
-    return (
-      // @ts-ignore
-      <input value={this.state.name} onChange={this.onChange.bind(this)} />
-    );
-  }
-}
-
-export class MyControl extends Control {
-  constructor(emitter, key, name) {
+  constructor(emitter, key, node, readonly = false) {
     super(key);
-    // @ts-ignore
-    this.render = "react";
-    // @ts-ignore
-    this.component = MyReactControl;
-    // @ts-ignore
+    this.emitter = emitter;
+    this.key = key;
+    this.component = NumControl.component;
+
+    const initial = node.data[key] || 0;
+
+    node.data[key] = initial;
     this.props = {
-      emitter,
-      id: key,
-      name,
-      // @ts-ignore
-      putData: () => this.putData.apply(this, arguments),
+      readonly,
+      value: initial,
+      onChange: (v) => {
+        this.setValue(v);
+        this.emitter.trigger("process");
+      },
     };
+  }
+
+  setValue(val) {
+    this.props.value = val;
+    this.putData(this.key, val);
+    this.update();
   }
 }

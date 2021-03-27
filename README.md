@@ -1,2 +1,2 @@
-# react-rete-sandbox
-rete の react plugin に型をつけるための実験場
+# rete-calc
+rete.js で計算する

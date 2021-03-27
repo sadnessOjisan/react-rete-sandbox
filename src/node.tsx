@@ -1,11 +1,8 @@
-import React from "react";
 import { Node, Socket, Control } from "rete-react-render-plugin";
 
 export class MyNode extends Node {
   render() {
-    // @ts-ignore
     const { node, bindSocket, bindControl } = this.props;
-    // @ts-ignore
     const { outputs, controls, inputs, selected } = this.state;
 
     return (

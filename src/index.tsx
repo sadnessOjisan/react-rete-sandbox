@@ -1,16 +1,15 @@
-import * as React from "react";
-import { render } from "react-dom";
-import init from "./editor";
+import "regenerator-runtime/runtime.js";
 
-const App = () => {
+import * as ReactDOM from "react-dom";
+import { init } from "./editor";
+
+export const App = () => {
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <div style={{ textAlign: "left", width: "100vw", height: "70vh" }}>
-        <div ref={(el) => init(el)} />
-      </div>
-    </div>
+    <div
+      ref={(el) => init(el)}
+      style={{ width: "100vw", height: "100vh" }}
+    ></div>
   );
 };
 
-render(<App></App>, document.body);
+ReactDOM.render(<App />, document.getElementById("root"));
